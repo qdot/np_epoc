@@ -1,0 +1,5 @@
+np_epoc ChangeLog
+===========================
+
+2010-10-11 Kyle Machulis <kyle@nonpolynomial.com>
+	* Setup np_epoc project

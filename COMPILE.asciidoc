@@ -1,0 +1,40 @@
+== Compiling NP Labs Externals ==
+
+In order to make cross platform builds easier on ourselves, we use flext. Flext allows for cross platform building for both Max and Pd. To build an nplabs external, you'll need:
+
+- Flext (http://puredata.info/Members/thomas/flext) - Available from the grrrr.org svn: https://svn.grrrr.org/ext/trunk/flext/) 
+- Whatever NP Labs library the external is using
+- For Pd externals, a Pd installation (http://www.pure-data.info - We use vanilla, not extended, as it's much easier to build for)
+- For Max/MSP externals, the Max SDK (http://www.cycling74.com/downloads/maxmsp)
+
+Build flext using the instructions that come with it. 
+
+nplabs externals are test built by having the external directory in the same root as flext, i.e.
+
+- root
+-- flext dir
+-- np_nifalcon
+-- np_trancevibe
+etc...
+
+After flext is built and installed, go into the nplabs external dir and rename the package-PLATFORM.txt file that corresponds to your platform to package.txt. Edit the file as needed to make the configuration settings correct.
+
+Then, you can build the nplabs external by typing
+
+../flext/build.sh|bat [options]
+
+from the nplabs external directory.
+
+== Binaries ==
+
+All windows externals are build using VS2008 (for compatibility sake). Mac is build on OS 10.5.WhateverIsNewest, gcc 4. Linux is test built on an ubuntu machine, but binaries are not distributed due to platform differences. If you use linux and pd and actually manage to get things done, you are probably able to build this yourself anyways. :)
+
+== Test Machines ==
+
+All NP labs externals are compiled and tested on the following platforms:
+
+- Windows (XP Pro, Visual Studio 2003)
+- OS X (10.5.WhateverIsNewest until Pd or Max go usable 64-bit, Intel, gcc 4)
+- Linux (Ubuntu 10.04, gcc 4)
+
+There is no guarantee a library will work on all platforms, or there may be different dependencies for different platforms. Compatibility issues with outside libraries may exist. If these happen, they will be listed in the README file under "Platform Specific Issues". 
