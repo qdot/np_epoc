@@ -1,0 +1,5 @@
+NAME=np_epoc
+BUILDTYPE=multi
+SRCS=epoc.c epoc_libusb.c np_epoc.flext.cpp 
+CFLAGS+=-I. -I/Users/qdot/git-projects/library/usr_darwin_10.5_x86/include/
+LIBS=/Users/qdot/git-projects/library/usr_darwin_10.5_x86/lib/libusb-1.0.a /Users/qdot/git-projects/library/usr_darwin_10.5_x86/lib/libmcrypt.a  -framework IOKit -framework CoreFoundation
