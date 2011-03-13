@@ -76,9 +76,10 @@ public:
 		//FLEXT_ADDBANG(0, epoc_output);
 		FLEXT_ADDMETHOD_(0, "start", epoc_start);
 		FLEXT_ADDMETHOD_(0, "stop", epoc_stop);
+		FLEXT_ADDMETHOD_(0, "count", epoc_count);
 		//FLEXT_ADDMETHOD_(0, "close", epoc_close);
 
-		post("Neurosky Epoc External v0.1");
+		post("Neurosky Epoc External v0.2");
 		post("by Nonpolynomial Labs (http://www.nonpolynomial.com)");
 		post("Updates at http://www.github.com/qdot/np_epoc");
 		post("Compiled on " __DATE__ " " __TIME__);
@@ -113,6 +114,11 @@ protected:
 		post("np_epoc - not a valid np_epoc message: %s", msg->s_name);
 	}
 
+	void epoc_count()
+	{
+		post("np_epoc - Devices connected: %d", epoc_get_count(m_epoc, 0x21a1, 0x0001));
+	}
+	
 	void epoc_stop()
 	{
 		m_runThread = false;
@@ -130,7 +136,7 @@ protected:
 		m_threadMutex.Unlock();
 		ScopedMutex m(m_threadMutex);
 		post("np_epoc - Entering epoc thread");
-		if(epoc_open(m_epoc, EPOC_VID, EPOC_PID, 0) != 0)
+		if(epoc_open(m_epoc, 0x21a1, 0x0001, 0) != 0)
 		{
 			post("np_epoc - Cannot open, exiting");
 			return;
@@ -178,6 +184,7 @@ private:
 	FLEXT_CALLBACK_A(epoc_anything)
 	FLEXT_THREAD(epoc_start)
 	FLEXT_CALLBACK(epoc_stop)
+	FLEXT_CALLBACK(epoc_count)
 };
 
 FLEXT_NEW("np_epoc", np_epoc)
