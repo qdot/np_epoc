@@ -6,11 +6,13 @@ Nonpolynomial Labs - http://www.nonpolynomial.com
 
 == Description ==
 
-np_epoc is an external for either Max/MSP or Puredata to receive information from the Emotiv EPOC EEG. It should work with the Consumer, Research, and Special Edition EPOCs. 
+np_epoc is an external for either Max/MSP or Puredata to receive
+information from the Emotiv EPOC EEG. It should work with the
+Consumer, Research, and Special Edition EPOCs.
 
 EPOC communication via Emokit:
 
-http://www.github.com/qdot/Emokit
+http://www.github.com/qdot/emokit
 
 Portability of source between Max and Pd is available thanks to flext
 
@@ -26,10 +28,24 @@ http://www.emotiv.com
 
 == Installation ==
 
-- Put the .mxo(Mac)/.mxe(Windows) or .pd_[platform] file in a directory that Max/Pd will search for externals (Max: Options -> File Preferences -> Other Folders, Pd: Options -> Paths)
-- Max: Put the .help (Max4) or .maxhelp (Max5) file in the max-help directory of your Max/MSP installation
+- Put the .mxo(Mac)/.mxe(Windows) or .pd_[platform] file in a
+  directory that Max/Pd will search for externals (Max: Options ->
+  File Preferences -> Other Folders, Pd: Options -> Paths)
+- Max: Put the .help (Max4) or .maxhelp (Max5) file in the max-help
+  directory of your Max/MSP installation
 
 == Platform Specifics Issues ==
+
+=== OS X
+
+You will need to install the EmotivNullDriver.kext on OS X for
+software to be able to access the EPOC. To do this, copy the
+osx/EmotivNullDriver.kext directory to
+/System/Library/Extensions/. Once this is done, reboot.
+
+This will blacklist the emotiv from the HID Manager so it can be read
+by Emokit. No telling what this will do in conjunction with the Emotiv
+OS X drivers, I haven't tested that yet.
 
 == Licensing ==
 
@@ -38,7 +54,7 @@ np_epoc is covered under the GPL License due to Flext. If you can unwind it from
 === np_epoc Copyright ===
 
 -------------------
-np_epoc, Copyright 2010 Kyle Machulis/Nonpolynomial Labs
+np_epoc, Copyright 2010-2011 Kyle Machulis/Nonpolynomial Labs
 -------------------
 
 === Flext Copyright and GPL License ===
