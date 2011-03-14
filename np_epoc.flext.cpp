@@ -63,7 +63,10 @@ public:
 	// constructor
 	np_epoc() :
 		m_runThread(false),
-		m_sleepTime(.01)
+		m_sleepTime(.01),
+		m_vid(0),
+		m_pid(0),
+		m_key(0)
 	{
 
 		// external setup
@@ -77,14 +80,16 @@ public:
 		FLEXT_ADDMETHOD_(0, "start", epoc_start);
 		FLEXT_ADDMETHOD_(0, "stop", epoc_stop);
 		FLEXT_ADDMETHOD_(0, "count", epoc_count);
+		FLEXT_ADDMETHOD_(0, "headset", epoc_anything);
 		//FLEXT_ADDMETHOD_(0, "close", epoc_close);
 
-		post("Neurosky Epoc External v0.2");
+		post("Neurosky Epoc External v0.1.5");
+		post("RESEARCH HEADSET ONLY w/ 0x1234 DONGLE ONLY");
 		post("by Nonpolynomial Labs (http://www.nonpolynomial.com)");
 		post("Updates at http://www.github.com/qdot/np_epoc");
 		post("Compiled on " __DATE__ " " __TIME__);
 
-		epoc_init(SPECIAL_HEADSET);
+		epoc_init(RESEARCH_HEADSET);
 		m_epoc = epoc_create();
 	}
 
@@ -108,15 +113,42 @@ protected:
 	ThrMutex m_epocMutex;
 	ThrMutex m_threadMutex;
 	epoc_device* m_epoc;
+	int m_vid;
+	int m_pid;
+	int m_key;
 
 	void epoc_anything(const t_symbol *msg,int argc,t_atom *argv)
 	{
+		if(!strcmp(msg->s_name, "headset"))
+		{
+			if(argc != 3)
+			{				
+				post("np_epoc - headset message takes 3 arguments: VID, PID, Key Index");
+				return;
+			}
+			m_key = GetInt(argv[2]);
+			if(m_key > 2 || m_key < 0)
+			{
+				post("np_epoc - Key must be 0 (consumer), 1 (research), 2 (special)");
+				return;
+			}			
+			m_vid = GetInt(argv[0]);
+			m_pid = GetInt(argv[1]);
+			epoc_init((headset_type)m_key);
+			post("np_epoc - Headset info - VID: 0x%.04x PID: 0x%.04x Key %d", m_vid, m_pid, m_key);
+			return;
+		}
 		post("np_epoc - not a valid np_epoc message: %s", msg->s_name);
 	}
 
 	void epoc_count()
 	{
-		post("np_epoc - Devices connected: %d", epoc_get_count(m_epoc, 0x21a1, 0x0001));
+		if(m_vid == 0 || m_pid == 0)
+		{
+			post("np_epoc - Must use headset command to set VID/PID first");
+			return;
+		}
+		post("np_epoc - Devices connected: %d", epoc_get_count(m_epoc, m_vid, m_pid));
 	}
 	
 	void epoc_stop()
@@ -136,9 +168,14 @@ protected:
 		m_threadMutex.Unlock();
 		ScopedMutex m(m_threadMutex);
 		post("np_epoc - Entering epoc thread");
-		if(epoc_open(m_epoc, 0x21a1, 0x0001, 0) != 0)
+		if(m_vid == 0 || m_pid == 0)
 		{
-			post("np_epoc - Cannot open, exiting");
+			post("np_epoc - Must use headset command to set VID/PID first");
+			return;
+		}
+		if(epoc_open(m_epoc, m_vid, m_pid, 0) != 0)
+		{
+			post("np_epoc - Cannot open 0x%.04x 0x%.04x, exiting", m_vid, m_pid);
 			return;
 		}
 		post("np_epoc - Opened Device");
