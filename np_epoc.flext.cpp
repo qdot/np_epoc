@@ -83,8 +83,7 @@ public:
 		FLEXT_ADDMETHOD_(0, "headset", epoc_anything);
 		//FLEXT_ADDMETHOD_(0, "close", epoc_close);
 
-		post("Neurosky Epoc External v0.1.5");
-		post("RESEARCH HEADSET ONLY w/ 0x1234 DONGLE ONLY");
+		post("Neurosky Epoc External v0.2");
 		post("by Nonpolynomial Labs (http://www.nonpolynomial.com)");
 		post("Updates at http://www.github.com/qdot/np_epoc");
 		post("Compiled on " __DATE__ " " __TIME__);
