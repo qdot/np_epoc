@@ -1,8 +1,10 @@
 = np_epoc Max/MSP and Pd External =
 
-by Kyle Machulis <kyle@nonpolynomial.com>
+== THIS PROJECT IS NO LONGER MAINTAINED ==
 
-Nonpolynomial Labs - http://www.nonpolynomial.com
+The code last commit on this project was in 2011, and both Max and the EPOC have changed quite a bit since then. I no longer have the resources nor hardware to continue maintenance of this project. The code is left here for archival purposes, but the repo is now readonly. 
+
+If someone decides to fork and restart this project, please let me know and I will add a reference to that repository.
 
 == Description ==
 
